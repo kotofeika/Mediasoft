@@ -1,35 +1,31 @@
 <?php
 function Words($a)          //Вычисляет количество слов в тексте
 {
-    $words = 1;
-    $lenght = strlen($a);
-    for ($i = 0 ; $i < $lenght ; $i++){
-        if ($a[$i] == " "){
-            $words += 1;
-        }
-    }
-    return $words;
+    $words = count( explode(' ', $a) );
+    output_maxwords($words);
 }
 
-function MaxWord($a, $words)  //Вычисляет количество вхождений каждого слова в тексте
+function words_wo_symbols($a) //Удаляет символы в строке
 {
-    $word1 = explode(" ", $a);
-    $word2 = explode(" ", $a);
-    $check = 0;
-    for ($i = 0; $i < $words; $i++) {
-        for ($j = 0; $j < $words; $j++) {
-            if ($word1[$i] === $word2[$j]) {
-                $check += 1;
-                unset ($word2[$j]);
-            }
-        }
-        if ($check !=0 ) {
-            echo $word1[$i], " : ", $check, "  ; " . PHP_EOL;
-        }
-        $check = 0;
-    }
+    $words_WO_simbols = str_replace(array( "\r\n","\r","\n",".", ",", "?", "!"),"",$a);
+    return($words_WO_simbols);
 }
 
+function count_word($fixedtext)  //Вычисляет количество вхождений каждого слова в тексте
+{
+    $output = explode(" ", $fixedtext);
+    $maxword = array_count_values($output);
+    output_count_word($maxword);
+}
+function output_count_word( $maxword) //Выводит количество вхождений каждого слова
+{
+    print_r ($maxword) . PHP_EOL;
+}
+
+function output_maxwords($words)
+{
+    echo "Всего слов : ", $words . PHP_EOL;
+}
 $a = "Я обманывать себя не стану, 
 Залегла забота в сердце мглистом. 
 Отчего прослыл я шарлатаном? 
@@ -44,6 +40,7 @@ $a = "Я обманывать себя не стану,
 Знает мою легкую походку.";   //73
 
 $words = Words($a);
-echo "Всего слов : ", $words . PHP_EOL;
-MaxWord($a, $words);
+$words_WO_simbols = words_wo_symbols($a);
+$words_lower = mb_strtolower($words_WO_simbols);
+count_word($words_lower);
 ?>
