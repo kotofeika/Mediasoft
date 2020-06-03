@@ -22,6 +22,7 @@ function count_word($fixedtext)  //Вычисляет количество вх�
     $maxword = array_count_values($output);
     output_count_word($maxword);
 }
+
 function output_count_word($maxword) //Выводит количество вхождений каждого слова
 {
     print_r ($maxword) . PHP_EOL;
@@ -54,8 +55,6 @@ function file_csv($a)  //Записывает слова, а так же зна�
     }
 }
 
-//конец записи с файла
-
 function textarea_csv($b)  //Записывает слова, а так же значения с формы textarea в textarea.csv
 {
     $words_WO_simbols = words_wo_symbols($b);
@@ -83,18 +82,15 @@ $b = $_POST['description'];
 
 //Проверка загруженного текста
 
-if (!empty($a) && !empty($b))
-{
-    textarea_csv($b);
-    file_csv($a);
-
-} else if (!empty($a) && empty($b)){
-    file_csv($a);
-}
-else if (!empty($b) && empty($a)){
-    textarea_csv($b);
-} else
+if (empty($a) && empty($b)) {
     echo "Текст не найден" . PHP_EOL;
+}
+if (!empty($a)){
+    textarea_csv($a);
+}
+if (!empty($b)){
+    file_csv($b);
+}
 ?>
 
 <!DOCTYPE html>
