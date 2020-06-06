@@ -1,12 +1,8 @@
 <?php
 $pdo = new PDO ('mysql:dbname=texts;host=localhost:3306', 'root','root');
-$selectQueryWords = 'SELECT * FROM `words`';
-$selectQueryUploaded_text = 'SELECT * FROM `uploaded_text`';
-$RowWords = $pdo -> query($selectQueryWords) -> fetch(PDO::FETCH_ASSOC);
+$selectQueryUploaded_text = 'SELECT `ID`,`content`,`date` FROM `uploaded_text`';
 $RowUploaded_text = $pdo -> query($selectQueryUploaded_text) -> fetch(PDO::FETCH_ASSOC);
-$allRowWords = $pdo -> query($selectQueryWords) -> fetchAll(PDO::FETCH_ASSOC);
 $allRowUploaded_text = $pdo -> query($selectQueryUploaded_text) -> fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
 <!DOCTYPE html>
@@ -16,12 +12,30 @@ $allRowUploaded_text = $pdo -> query($selectQueryUploaded_text) -> fetchAll(PDO:
     <title>Main</title>
 </head>
 <body>
+<table  cellpadding="5" border="2" align="left" bordercolor="blue">
+    <tr>
+        <td>
+            <form action="/details.php" target="_blank">
+                <button>Детали</button>
+            </form>
+        </td>
+        <td>
+            <form action="/details.php" target="_blank">
+                <button>Загрузка</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+
 <form method="post" enctype="multipart/form-data">
     <table  cellpadding="5" border="2" align="center" bordercolor="blue">
         <thead bgcolor="#B0E0E6">
         <tr>
             <td>ID</td>
             <td>Content</td>
+            <td>Date</td>
+            <td>Details</td>
         </tr>
         </thead>
 
@@ -32,20 +46,16 @@ $allRowUploaded_text = $pdo -> query($selectQueryUploaded_text) -> fetchAll(PDO:
                 <td><?php $string = substr($RowUploaded_text['content'], 0, 100);
                     $string = rtrim($string, "!,.-");
                     $string = substr($string, 0, strrpos($string, ' '));?>
-
                     <?= $string,"..."?></td>
+                <td><?=$RowUploaded_text['date']?></td>
+                <td><a href="details.php?id=<?= $RowUploaded_text['ID']?>">Click</a></td>
             </tr>
         <?php }?>
-        </tbody>
-        <br>
+        </tbody><br>
+
     </table>
 </form>
-<form action="/details.php" target="_blank">
-    <button>Детали</button>
 
-</form>
-<form action="/index.php" target="_blank">
-    <button>Загрузка</button>
-</form>
 </body>
 </html>
+

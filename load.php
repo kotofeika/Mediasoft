@@ -1,9 +1,5 @@
 <?php
 $pdo = new PDO ('mysql:dbname=texts;host=localhost:3306', 'root','root');
-
-$selectQueryWords = 'SELECT * FROM `words`';
-$oneRow = $pdo -> query($selectQueryWords) -> fetch(PDO::FETCH_ASSOC);
-$allRow = $pdo -> query($selectQueryWords) -> fetchAll(PDO::FETCH_ASSOC);
 $insertQueryWords = 'INSERT INTO 
 `words`(`text_id`,`word`,`count`, `date`) 
 VALUES (?,?,?, NOW())';
@@ -62,9 +58,9 @@ if (!empty($b)) {
 </head>
 <body>
 <form action="/mainpage.php" target="_blank">
-<button>Главная</button>
+    <button>Главная</button>
 </form>
-<form action="/mainpage.php" method="post" enctype="multipart/form-data">
+<form  method="post" enctype="multipart/form-data">
     <input type="file" name="file" > <br>
     <textarea name="description">default</textarea>
     <input type="submit">

@@ -27,12 +27,13 @@ SET time_zone = "+00:00";
 -- Структура таблицы `uploaded_text`
 --
 
-CREATE TABLE `uploaded_text` (
-  `ID` int(11) NOT NULL,
-  `content` text COLLATE utf8mb4_unicode_ci,
-  `date` date DEFAULT NULL,
-  `words_count` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `uploaded_text`(
+    `ID` int AUTO_INCREMENT,
+    `content` text DEFAULT NULL,
+    `date` date DEFAULT NULL,
+    `words_count` int DEFAULT NULL,
+    PRIMARY KEY(ID)
+);
 
 
 -- --------------------------------------------------------
@@ -42,48 +43,13 @@ CREATE TABLE `uploaded_text` (
 --
 
 CREATE TABLE `words` (
-  `ID` int(11) NOT NULL,
-  `text_id` int(11) DEFAULT NULL,
+  `ID` int AUTO_INCREMENT,
+  `text_id` int DEFAULT NULL,
   `word` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `count` int(11) DEFAULT NULL,
-  `date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `count` int DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  PRIMARY KEY(ID)
+);
 
 
 
---
--- Индексы сохранённых таблиц
---
-
---
--- Индексы таблицы `uploaded_text`
---
-ALTER TABLE `uploaded_text`
-  ADD PRIMARY KEY (`ID`);
-
---
--- Индексы таблицы `words`
---
-ALTER TABLE `words`
-  ADD PRIMARY KEY (`ID`);
-
---
--- AUTO_INCREMENT для сохранённых таблиц
---
-
---
--- AUTO_INCREMENT для таблицы `uploaded_text`
---
-ALTER TABLE `uploaded_text`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
-
---
--- AUTO_INCREMENT для таблицы `words`
---
-ALTER TABLE `words`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1176;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
