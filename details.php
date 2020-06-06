@@ -1,12 +1,19 @@
 <?php
+
+foreach($_GET as $key => $value){
+    $id = $value;
+}
+
 $pdo = new PDO ('mysql:dbname=texts;host=localhost:3306', 'root','root');
-$selectQueryWords = 'SELECT * FROM `words` WHERE  `text_id` = ( SELECT max(`ID`) FROM `uploaded_text`)';
-$selectQueryUploaded_text = 'SELECT * FROM `uploaded_text`  WHERE `ID`=( SELECT max(`ID`) FROM `uploaded_text`)';
-$allRowWords = $pdo -> query($selectQueryWords) -> fetchAll(PDO::FETCH_ASSOC);
-$allRowUploaded_text = $pdo -> query($selectQueryUploaded_text) -> fetchAll(PDO::FETCH_ASSOC);
-$RowWords = $pdo -> query($selectQueryWords) -> fetch(PDO::FETCH_ASSOC);
-$RowUploaded_text = $pdo -> query($selectQueryUploaded_text) -> fetch(PDO::FETCH_ASSOC);
-//$allRowWords = explode('Array',"$allRowWords");
+$selectQueryWords = 'SELECT `word`,`count`,`text_id` FROM `words` WHERE text_id = :id';
+$selectQueryWordsDB = $pdo -> prepare($selectQueryWords);
+$selectQueryWordsDB -> execute(['id' => $id]);
+$selectQueryWords = $selectQueryWordsDB -> fetchAll(PDO::FETCH_ASSOC);
+
+$selectQueryUploaded_text = 'SELECT `ID`,`content`,`words_count` FROM `uploaded_text` WHERE `ID` =:id';
+$selectQueryUploaded_textDB = $pdo -> prepare($selectQueryUploaded_text );
+$selectQueryUploaded_textDB -> execute(['id' => $id]);
+$selectUploaded_text = $selectQueryUploaded_textDB -> fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -23,9 +30,11 @@ $RowUploaded_text = $pdo -> query($selectQueryUploaded_text) -> fetch(PDO::FETCH
 
 <form method="post" enctype="multipart/form-data">
     <table cellpadding="5" border="2" align="center" bordercolor="blue" >
-        <?php foreach($allRowUploaded_text as $RowUploaded_text) {?>
+        <?php foreach($selectUploaded_text as $RowUploaded_text) {?>
             <tr>
-                <td><?= $RowUploaded_text['content']?></td>
+                <td>
+                    <?= $RowUploaded_text['content']?>
+                </td>
             </tr>
 
             <tr>
@@ -35,23 +44,23 @@ $RowUploaded_text = $pdo -> query($selectQueryUploaded_text) -> fetch(PDO::FETCH
         <br>
     </table>
 </form>
-
+<?php
+//var_dump($selectQueryWordsDB -> fetchAll());
+?>
 <form method="post" enctype="multipart/form-data">
     <table  cellpadding="5" border="2" align="center" bordercolor="blue">
         <thead bgcolor="#B0E0E6">
         <tr>
             <td>Word</td>
             <td>Count</td>
-            <td>Date</td>
         </tr>
         </thead>
 
         <tbody>
-        <?php foreach($allRowWords as $RowWords) {?>
+        <?php foreach($selectQueryWords as $RowWords) {?>
             <tr>
                 <td><?= $RowWords['word']?></td>
                 <td><?= $RowWords['count']?></td>
-                <td><?= $RowWords['date']?></td>
             </tr>
         <?php }?>
         </tbody>
@@ -62,3 +71,4 @@ $RowUploaded_text = $pdo -> query($selectQueryUploaded_text) -> fetch(PDO::FETCH
 </body>
 
 </html>
+
